@@ -8,14 +8,18 @@ import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService {
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
-
     // 인터페이스에만 의존하도록 코드를 변경. (구현체 코드( new ~~() 를 들어냄)
     // ## 문제제기
     //     - 그런데 구현체가 없는데 어떻게 코드가 실행될 수 있을까???
     // ## 해결방안
     //     - 누군가가 클라이언트인 OrderServiceImpl에 DiscountPolicy의 구현체를 "대신" 생성하고 주입해줘야함.
-    private DiscountPolicy discountPolicy;
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
+
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
