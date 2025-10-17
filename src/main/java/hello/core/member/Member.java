@@ -1,5 +1,13 @@
 package hello.core.member;
 
+
+/**
+ * 회원 도메인 요구사항
+ * - 회원을 가입하고 조회할 수 있다
+ * - 회원은 일반과 VIP 두 가지 등급이 있다.
+ * - 회원 데이터는 자체 DB를 구축할 수 있고, 외부 시스템과 연동할 수 있다.(미확정)
+ */
+
 public class Member {
     private Long id;
     private String name;
