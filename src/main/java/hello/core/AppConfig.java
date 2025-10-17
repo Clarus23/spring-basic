@@ -1,5 +1,6 @@
 package hello.core;
 
+import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
@@ -25,10 +26,30 @@ import hello.core.order.OrderServiceImpl;
  */
 public class AppConfig {
     public MemberService memberService() {
-        return new MemberServiceImpl(new MemoryMemberRepository());
+        return new MemberServiceImpl(memberRepository());
     }
 
     public OrderService orderService() {
-        return new OrderServiceImpl(new MemoryMemberRepository(), new FixDiscountPolicy());
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
+    }
+
+    private static MemoryMemberRepository memberRepository() {
+        return new MemoryMemberRepository();
+    }
+
+    private static DiscountPolicy discountPolicy() {
+        return new FixDiscountPolicy();
     }
 }
+/*
+## AppConfig refactoring
+  ## refactoring 이전
+    - AppConfig를 보면 **중복**이 존재하고, **역할**에 따른 **구현**이 잘 안보임.
+      => 중복을 제거하고, 역할에 따른 구현이 보이도록 리팩토링 수행.
+
+  ## refactoring 이후
+    - memberRepository를 **중복으로 생성**하는 부분이 제거됨.
+      => 이제 memberRepository의 구현체를 변경할 시, 한 부분만 변경하면 됨.
+    - AppConfig를 보면 역할과 구현 클래스가 한눈에 들어온다.
+      => 애플리케이션 전체 구성이 어떻게 되어있는지 빠르게 파악 가능하다.
+ */
