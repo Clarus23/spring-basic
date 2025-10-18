@@ -2,6 +2,7 @@ package hello.core;
 
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
+import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
@@ -38,7 +39,16 @@ public class AppConfig {
     }
 
     private static DiscountPolicy discountPolicy() {
-        return new FixDiscountPolicy();
+//        return new FixDiscountPolicy();
+        return new RateDiscountPolicy();
+        /*
+        ## 새로운 할인 정책 적용
+            - 이제는 할인 정책을 변경해도, Application의 구성 역할을 담당하는 AppConfig만 변경하면 됨,
+            - 클라이언트 코드인 OrderServiceImpl을 포함해 **사용 영역**의 어떤 코드도 변경할 필요가 없음
+            - 구성 영역은 당연히 변경됨.
+        ## 새로운 프로젝트 구조
+            - 구성 영역(AppConfig) + 사용 영역(Service code)
+        */
     }
 }
 /*
