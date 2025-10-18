@@ -8,6 +8,8 @@ import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /*
 ## 관심사를 분리하자
@@ -25,20 +27,34 @@ import hello.core.order.OrderServiceImpl;
     - 이제 각 배우(Service)들은 담당 기능을 실행하는 책임만 지면 된다.
     - OrderServiceImpl은 기능을 실행하는 책임만 지면된다.
  */
+/*
+## 스프링으로 전환
+    - ApplicationContext를 **스프링 컨테이너**라고 한다.
+    - 기존에는 개발자가 AppConfig를 사용해 직접 객체를 생성하고 DI를 하였지만, 이제는 스프링 컨테이너를 통해서 사용한다.
+    - 스프링 컨테이너는 @Configuration이 붙은 AppConfig를 설정(구성) 정보로 활용한다.
+        - 여기서 @Bean이라 적힌 메서드를 **모두 호출**하여 반환된 객체를 스프링 컨테이너에 등록한다.
+        - 이렇게 등록된 객체를 **스프링 빈**이라고 한다.
+    - 스프링 빈은 @Bean이 붙은 메서드 명을 스프링 빈의 이름으로 사용함.
+*/
+@Configuration
 public class AppConfig {
+    @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
     }
 
+    @Bean
     public OrderService orderService() {
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
-    private static MemoryMemberRepository memberRepository() {
+    @Bean
+    public static MemoryMemberRepository memberRepository() {
         return new MemoryMemberRepository();
     }
 
-    private static DiscountPolicy discountPolicy() {
+    @Bean
+    public static DiscountPolicy discountPolicy() {
 //        return new FixDiscountPolicy();
         return new RateDiscountPolicy();
         /*
