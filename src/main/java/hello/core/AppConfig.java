@@ -39,23 +39,37 @@ import org.springframework.context.annotation.Configuration;
 */
 @Configuration
 public class AppConfig {
+
+    /*
+    ## @Configuration과 싱글톤
+        - @Bean memberService() -> new MemoryMemberRepository()
+        - @Bean orderService() -> new MemoryMemberRepository()
+        => 결과적으로 서로 다른 2개의 `new MemoryMemberRepository()`가 호출되며 싱글톤이 깨진 것 처럼 보임.
+            스프링 컨테이너는 이 문제를 어떻게 해결할까?
+
+        - 호출 로그를 한번 찍어서 테스트 해보자.
+     */
+
     @Bean
     public MemberService memberService() {
+//        System.out.println("call AppConfig.memberService");
         return new MemberServiceImpl(memberRepository());
     }
 
     @Bean
-    public OrderService orderService() {
-        return new OrderServiceImpl(memberRepository(), discountPolicy());
-    }
-
-    @Bean
-    public static MemberRepository memberRepository() {
+    public MemberRepository memberRepository() {
+//        System.out.println("call AppConfig.memberRepository");
         return new MemoryMemberRepository();
     }
 
     @Bean
-    public static DiscountPolicy discountPolicy() {
+    public OrderService orderService() {
+//        System.out.println("call AppConfig.orderService");
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
+    }
+
+    @Bean
+    public DiscountPolicy discountPolicy() {
 //        return new FixDiscountPolicy();
         return new RateDiscountPolicy();
         /*

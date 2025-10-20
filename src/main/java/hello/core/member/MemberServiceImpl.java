@@ -16,4 +16,9 @@ public class MemberServiceImpl implements MemberService {
     public void join(Member member) {
         memberRepository.save(member);
     }
+
+    // 테스트 용도 코드
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }
