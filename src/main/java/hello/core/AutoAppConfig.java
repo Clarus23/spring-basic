@@ -34,6 +34,7 @@ public class AutoAppConfig {
                 `ConfilictingBeanDefinitionException` 예외 발생
             2. 수동 빈 등록 vs 자동 빈 등록
                 수동 빈이 자동 빈을 overriding
+                => 최근 스프링부트는 충돌 시 오류가 발생하도록 default값을 바꾸었다.
      */
     /* 수동 빈 등록 vs 자동 빈 등록 상황을 만들기 위한 코드
     @Bean(name = "memoryMemberRepository")
