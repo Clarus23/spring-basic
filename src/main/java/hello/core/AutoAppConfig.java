@@ -14,7 +14,12 @@ import org.springframework.context.annotation.FilterType;
  */
 @Configuration
 @ComponentScan(  // @Component 애노테이션이 붙은 클래스를 스캔해서 스프링 빈으로 등록
-        // 기존 예제코드를 남기기 위한 excludeFilter
-    excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
+        /*
+        basePackages, basePackageClasses를 지정하지 않는다면,
+        @ComponentScan 이 붙은 **설정 정보 클래스의 패키지**가 시작 위치가 된다.
+        */
+        basePackages = "hello.core",  // 꼭 필요한 위치부터 탐색하도록 **탐색 시작 위치** 지정 가능
+        // basePackageClasses = AutoAppConfig.class,  // 지정한 클래스의 **패키지**를 탐색 시작 위치로 지정(현 예제에선 "hello.core")
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)  // 기존 예제코드를 남기기 위한 excludeFilter
 )
 public class AutoAppConfig {}
