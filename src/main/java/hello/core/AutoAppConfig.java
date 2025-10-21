@@ -1,5 +1,8 @@
 package hello.core;
 
+import hello.core.member.MemberRepository;
+import hello.core.member.MemoryMemberRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -22,4 +25,20 @@ import org.springframework.context.annotation.FilterType;
         // basePackageClasses = AutoAppConfig.class,  // 지정한 클래스의 **패키지**를 탐색 시작 위치로 지정(현 예제에선 "hello.core")
         excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)  // 기존 예제코드를 남기기 위한 excludeFilter
 )
-public class AutoAppConfig {}
+public class AutoAppConfig {
+
+    /*
+    ## 중복 등록과 충돌
+        - 컴포넌트 스캔에서 같인 빈 이름을 등록하면 어떻게 될까?
+            1. 자동 빈 등록 vs 자동 빈 등록
+                `ConfilictingBeanDefinitionException` 예외 발생
+            2. 수동 빈 등록 vs 자동 빈 등록
+                수동 빈이 자동 빈을 overriding
+     */
+    /* 수동 빈 등록 vs 자동 빈 등록 상황을 만들기 위한 코드
+    @Bean(name = "memoryMemberRepository")
+    public MemberRepository memoryMemberRepository() {
+        return new MemoryMemberRepository();
+    }
+    */
+}
